@@ -3,11 +3,11 @@ import * as C from "./style";
 
 const Header = () => {
   return (
-    <C.Container>
+    <di>
       <C.Header>
         <C.Title>Gerenciamento de controle</C.Title>
       </C.Header>
-    </C.Container>
+    </di>
   );
 };
 

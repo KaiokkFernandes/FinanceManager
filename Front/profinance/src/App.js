@@ -52,7 +52,7 @@ const App = () => {
     return (
         <div style={backgroundStyle}>
               <Header />  
-             <Resume />
+             <Resume income= {income} expense={expense} total={total}/>
              <Form  />
             <GlobalStyle />  
         </div>
