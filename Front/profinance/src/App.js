@@ -4,23 +4,33 @@ import Header from "./components/Header";
 import Resume from "./components/Resume";
 import Form from "./components/Form";
 
-
 const App = () => {
+  const backgroundStyle = {
+    backgroundImage: `url(/img/fundo.jpg)`,
+    height: '100vh', 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+  };
 
-    const backgroundStyle = {
-        backgroundImage: `url(/img/fundo.jpg )`,
-        height: '100vh', 
-        backgroundSize: 'cover', 
-        backgroundPosition: 'center', 
-      };
-
-  const data = localStorage.getItem("transactions");
-  const [transactionsList, setTransactionsList] = useState(
-    data ? JSON.parse(data) : []
-  );
+  const [transactionsList, setTransactionsList] = useState([]);
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    // Função para buscar transações da API
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/transactions');
+        const data = await response.json();
+        setTransactionsList(data);
+      } catch (error) {
+        console.error("Erro ao buscar transações:", error);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
 
   useEffect(() => {
     const amountExpense = transactionsList
@@ -41,16 +51,26 @@ const App = () => {
     setTotal(`${Number(income) < Number(expense) ? "-" : ""}R$ ${total}`);
   }, [transactionsList]);
 
-  const handleAdd = (transaction) => {
-    const newArrayTransactions = [...transactionsList, transaction];
-
-    setTransactionsList(newArrayTransactions);
-
-    localStorage.setItem("transactions", JSON.stringify(newArrayTransactions));
+  const handleAdd = async (transaction) => {
+    try {
+      await fetch('http://localhost:3001/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(transaction),
+      });
+      // Após adicionar, buscar as transações novamente para atualizar o estado
+      const response = await fetch('http://localhost:3001/transactions');
+      const data = await response.json();
+      setTransactionsList(data);
+    } catch (error) {
+      console.error("Erro ao adicionar transação:", error);
+    }
   };
 
   return (
-     <div style={backgroundStyle}>
+    <div style={backgroundStyle}>
       <Header />
       <Resume income={income} expense={expense} total={total} />
       <Form
@@ -59,7 +79,7 @@ const App = () => {
         setTransactionsList={setTransactionsList}
       />
       <GlobalStyle />
-    </div>  
+    </div>
   );
 };
 
