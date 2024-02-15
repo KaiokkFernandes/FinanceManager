@@ -1,10 +1,13 @@
-import {database} from "../database" 
 
-export const getUsers = (_, res) =>{
-const q =  "SELECT * FROM usuarios";
+import database from "../database.js";
 
-   database.query(q, ( err, data) => {
-       if(err) return res.json(err);
-       return res.status(200).json(data);
-   });
+export const getUsers = async (req, res) => {
+    const q = "SELECT * FROM usuario";
+
+    try {
+        const [data] = await database.query(q);
+        res.status(200).json(data);
+    } catch (err) {
+        res.json(err);
+    }
 };
