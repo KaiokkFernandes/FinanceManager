@@ -1,9 +1,11 @@
 import express from 'express';
+import { getUsers, getSummary } from '../controllers/user.js'; // Adicione a importação aqui
 
-import { getUsers } from '../controllers/user.js'; 
+
+
 
 const router = express.Router();
 
-router.get("/", getUsers);
-
+router.get("/users", getUsers);
+router.get("/summary", getSummary);
 export default router;
