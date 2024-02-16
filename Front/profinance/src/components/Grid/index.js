@@ -1,5 +1,5 @@
 import React from "react";
-import GridItem from "../GridItem/Index"; // Ajuste o caminho se necessário
+import GridItem from "../GridItem/Index"; // Verifique se o caminho está correto
 import * as C from "./styles";
 
 const Grid = ({ items, onDeleteTransaction }) => {
@@ -17,15 +17,16 @@ const Grid = ({ items, onDeleteTransaction }) => {
       </C.Thead>
       <C.Tbody>
         {items?.map((item, index) => (
-          <GridItem
-            key={index}
-            description={item.desc} // Mude para 'description' se for o nome correto
-            value={item.valor}
-            entry={item.entrada} // Mude para 'entry' se for o nome correto
-            exit={item.saida} // Mude para 'exit' se for o nome correto
-            total={item.total}
-            onDelete={() => onDeleteTransaction(item.id)}
-          />
+          <C.Tr key={index}> {/* Adicionada tag <tr> aqui */}
+            <GridItem
+              description={item.desc} 
+              value={item.valor}
+              entry={item.entrada} 
+              exit={item.saida} 
+              onDelete={() => onDeleteTransaction(item.id)}
+              id={item.id} 
+            />
+          </C.Tr>
         ))}
       </C.Tbody>
     </C.Table>
