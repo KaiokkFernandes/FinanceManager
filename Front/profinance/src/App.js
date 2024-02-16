@@ -3,33 +3,51 @@ import GlobalStyle from "./styles/global";
 import Header from "./components/Header";
 import Resume from "./components/Resume";
 import Form from "./components/Form";
+import axios from "axios";
+import Grid from "./components/Grid";
 
 const App = () => {
   const backgroundStyle = {
     backgroundImage: `url(/img/fundo.jpg)`,
-    height: '100vh', 
-    backgroundSize: 'cover', 
-    backgroundPosition: 'center', 
+    height: '100vh',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
   };
 
   const [transactionsList, setTransactionsList] = useState([]);
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [total, setTotal] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [onEdit, setOnEdit] = useState(null);
+  
+
+  const getUsers = async () => {
+    try {
+      const res = await axios.get('http://localhost:8800/users ');
+      setUsers(res.data.sort((a, b) => a.id - b.id ? 1 : -1));
+    } catch (error) {
+      console.error("Erro ao buscar itens", error);
+    }
+  }
 
   useEffect(() => {
-    // Função para buscar transações da API
-    const fetchTransactions = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/transactions');
-        const data = await response.json();
-        setTransactionsList(data);
-      } catch (error) {
-        console.error("Erro ao buscar transações:", error);
-      }
-    };
+    getUsers();
+  }, []);
 
-    fetchTransactions();
+  const getSummary = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:8800/summary');
+      setIncome(data.income);
+      setExpense(data.expense);
+      setTotal(data.total);
+    } catch (error) {
+      console.error("Erro ao buscar o resumo financeiro", error);
+    }
+  };
+
+  useEffect(() => {
+    getSummary();
   }, []);
 
   useEffect(() => {
@@ -51,21 +69,25 @@ const App = () => {
     setTotal(`${Number(income) < Number(expense) ? "-" : ""}R$ ${total}`);
   }, [transactionsList]);
 
-  const handleAdd = async (transaction) => {
+  const handleAddTransaction = async (transaction) => {
     try {
-      await fetch('http://localhost:3001/transactions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transaction),
-      });
+      await axios.post('http://localhost:8800/transactions', transaction);
       // Após adicionar, buscar as transações novamente para atualizar o estado
-      const response = await fetch('http://localhost:3001/transactions');
-      const data = await response.json();
-      setTransactionsList(data);
+      const res = await axios.get('http://localhost:8800/transactions');
+      setTransactionsList(res.data);
     } catch (error) {
       console.error("Erro ao adicionar transação:", error);
+    }
+  };
+
+  const handleDeleteTransaction = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8800/transactions/${id}`);
+      // Após deletar, buscar as transações novamente para atualizar o estado
+      const res = await axios.get('http://localhost:8800/transactions');
+      setTransactionsList(res.data);
+    } catch (error) {
+      console.error("Erro ao deletar transação:", error);
     }
   };
 
@@ -73,11 +95,8 @@ const App = () => {
     <div style={backgroundStyle}>
       <Header />
       <Resume income={income} expense={expense} total={total} />
-      <Form
-        handleAdd={handleAdd}
-        transactionsList={transactionsList}
-        setTransactionsList={setTransactionsList}
-      />
+      <Form onAddTransaction={handleAddTransaction} />
+      <Grid items={users} onDeleteTransaction={handleDeleteTransaction} />
       <GlobalStyle />
     </div>
   );
