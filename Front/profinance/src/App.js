@@ -5,6 +5,8 @@ import Resume from "./components/Resume";
 import Form from "./components/Form";
 import axios from "axios";
 import Grid from "./components/Grid";
+import RelatorioPDF from "./components/Reports/relatorio";
+ 
 
 const App = () => {
   const backgroundStyle = {
@@ -21,7 +23,9 @@ const App = () => {
   const [users, setUsers] = useState([]);
   const [onEdit, setOnEdit] = useState(null);
   
-
+  const genereatePDF = () => {
+    RelatorioPDF(users);
+  }  
   const getUsers = async () => {
     try {
       const res = await axios.get('http://localhost:8800/users ');
@@ -95,7 +99,7 @@ const App = () => {
 
   const handleDeleteTransaction = async (id) => {
     try {
-      await axios.delete(`http://localhost:8800/delete/:id/${id}`); 
+      await axios.delete(`http://localhost:8800/delete/${id}`); 
       
       // Busque a lista atualizada de itens e o resumo financeiro
       getUsers();
@@ -109,7 +113,7 @@ const App = () => {
     <div style={backgroundStyle}>
       <Header />
       <Resume income={income} expense={expense} total={total} />
-      <Form onAddTransaction={handleAddTransaction} />
+      <Form onAddTransaction={handleAddTransaction} onGenerateReport={genereatePDF} />
       <Grid items={users} onDeleteTransaction={handleDeleteTransaction} />
       <GlobalStyle />
     </div>

@@ -2,6 +2,7 @@ import React from "react";
 import GridItem from "../GridItem/Index"; // Verifique se o caminho está correto
 import * as C from "./styles";
 
+
 const Grid = ({ items, onDeleteTransaction }) => {
   return (
     <C.Table>
@@ -17,7 +18,7 @@ const Grid = ({ items, onDeleteTransaction }) => {
       </C.Thead>
       <C.Tbody>
         {items?.map((item, index) => (
-          <C.Tr key={index}> {/* Adicionada tag <tr> aqui */}
+          <C.Tr key={index}> {}
             <GridItem
               description={item.desc} 
               value={item.valor}
