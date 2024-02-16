@@ -62,7 +62,10 @@ const App = () => {
     const expense = amountExpense.reduce((acc, cur) => acc + cur, 0).toFixed(2);
     const income = amountIncome.reduce((acc, cur) => acc + cur, 0).toFixed(2);
 
-    const total = Math.abs(income - expense).toFixed(2);
+    const total = (income - expense).toFixed(2);
+    setTotal(`${Number(income) >= Number(expense) ? "" : "-"}R$ ${total}`);
+
+    
 
     setIncome(`R$ ${income}`);
     setExpense(`R$ ${expense}`);
@@ -71,10 +74,20 @@ const App = () => {
 
   const handleAddTransaction = async (transaction) => {
     try {
-      await axios.post('http://localhost:8800/transactions', transaction);
-      // Após adicionar, buscar as transações novamente para atualizar o estado
-      const res = await axios.get('http://localhost:8800/transactions');
-      setTransactionsList(res.data);
+      
+      const { desc, amount, isExpense } = transaction;
+  
+      // Faça a requisição POST com isExpense no corpo
+      await axios.post('http://localhost:8800/transaction', {
+        desc,
+        valor: amount,
+        isExpense, 
+      });
+  
+      
+    
+      getUsers();
+      getSummary();
     } catch (error) {
       console.error("Erro ao adicionar transação:", error);
     }
@@ -82,10 +95,11 @@ const App = () => {
 
   const handleDeleteTransaction = async (id) => {
     try {
-      await axios.delete(`http://localhost:8800/transactions/${id}`);
-      // Após deletar, buscar as transações novamente para atualizar o estado
-      const res = await axios.get('http://localhost:8800/transactions');
-      setTransactionsList(res.data);
+      await axios.delete(`http://localhost:8800/delete/:id/${id}`); 
+      
+      // Busque a lista atualizada de itens e o resumo financeiro
+      getUsers();
+      getSummary();
     } catch (error) {
       console.error("Erro ao deletar transação:", error);
     }

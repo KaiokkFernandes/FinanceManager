@@ -18,10 +18,10 @@ const Form = ({ onAddTransaction }) => {
     const transaction = {
       desc: desc,
       amount: Number(amount),
-      expense: isExpense,
+      isExpense: isExpense,
     };
 
-    onAddTransaction(transaction); // Chama a função passada pelo componente pai para adicionar a transação
+    onAddTransaction(transaction);  
 
     // Limpa os campos após a adição
     setDesc("");
