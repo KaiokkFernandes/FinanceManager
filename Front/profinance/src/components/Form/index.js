@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import * as C from "./styles";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import RelatorioPDF from "../Reports/relatorio";
 
-
-const Form = ({ onAddTransaction }) => {
+const Form = ({ onAddTransaction, onGenerateReport }) => {
   const [desc, setDesc] = useState("");
   const [amount, setAmount] = useState("");
   const [isExpense, setExpense] = useState(false);
@@ -65,7 +65,7 @@ const Form = ({ onAddTransaction }) => {
         <C.Label htmlFor="rExpenses">Saída</C.Label>
       </C.RadioGroup>
          <C.Button onClick={handleSave}>ADICIONAR</C.Button>
-         <C.Button onClick={handleSave}>  
+         <C.Button onClick={(e)=> onGenerateReport() }>  
          <FontAwesomeIcon icon={faFilePdf} /> GERAR PDF
          </C.Button>
     </C.Container>
