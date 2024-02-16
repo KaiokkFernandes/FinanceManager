@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import * as C from "./styles";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+
 
 const Form = ({ onAddTransaction }) => {
   const [desc, setDesc] = useState("");
@@ -61,7 +64,10 @@ const Form = ({ onAddTransaction }) => {
         />
         <C.Label htmlFor="rExpenses">Saída</C.Label>
       </C.RadioGroup>
-      <C.Button onClick={handleSave}>ADICIONAR</C.Button>
+         <C.Button onClick={handleSave}>ADICIONAR</C.Button>
+         <C.Button onClick={handleSave}>  
+         <FontAwesomeIcon icon={faFilePdf} /> GERAR PDF
+         </C.Button>
     </C.Container>
   );
 };

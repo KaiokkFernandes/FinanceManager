@@ -95,7 +95,7 @@ const App = () => {
 
   const handleDeleteTransaction = async (id) => {
     try {
-      await axios.delete(`http://localhost:8800/delete/:id/${id}`); 
+      await axios.delete(`http://localhost:8800/delete/${id}`); 
       
       // Busque a lista atualizada de itens e o resumo financeiro
       getUsers();

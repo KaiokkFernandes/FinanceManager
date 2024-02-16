@@ -6,7 +6,6 @@ import {
   FaTrash,
 } from "react-icons/fa";
 
-// As propriedades devem corresponder às que estão sendo passadas para o componente.
 const GridItem = ({ description, value, entry, exit, onDelete, id }) => {
  
   const isExpense = !entry; 
