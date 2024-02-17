@@ -1,4 +1,4 @@
-# Documentação da Aplicação de Gerenciamento Financeiro
+# Documentação da Aplicação de Gerenciamento Financeiro ProFinance
 
 ## Visão Geral
 
@@ -42,11 +42,50 @@ Cada transação listada na tabela possui um botão para sua remoção, permitin
 layout:
 ![imgLayout](https://github.com/KaiokkFernandes/FinanceManager/assets/148721400/3b6b322c-77b5-4aba-977b-5d0d14fcf7aa)
 
-Relatorio em PDF:
+Relatório em PDF:
 ![imgRelatorio](https://github.com/KaiokkFernandes/FinanceManager/assets/148721400/660901ab-56eb-409a-bf2d-326920919c28)
 
 ## Back-end e Banco de Dados
 
+O banco de dados `dbfinance` contém uma tabela `usuario` onde as transações financeiras são armazenadas. A tabela contém as seguintes colunas:
+
+- `id`: Um identificador único para cada transação.
+- `desc`: Descrição da transação.
+- `valor`: Valor da transação.
+- `entrada`: Valor creditado.
+- `saida`: Valor debitado.
+- `total`: Saldo total após a transação.
+
+## Backend
+
+O backend é construído utilizando o Node.js e estruturado em torno de `controllers` e `routes`.
+
+### Controllers
+
+#### getUsers
+Obtém todos os itens da tabela `usuario`.
+
+#### deleteUser
+Deleta um item da tabela `usuario` com base no `id` fornecido.
+
+#### getSummary
+Calcula o resumo financeiro, somando todas as entradas e saídas e calculando o saldo total.
+
+#### addTransaction
+Adiciona uma nova transação na tabela `usuario` e atualiza o saldo total.
+
+### Rotas
+
+As rotas são definidas para permitir operações CRUD na tabela `usuario`.
+
+- `GET /users`: Retorna todos os usuários.
+- `GET /summary`: Retorna o resumo financeiro.
+- `POST /transaction`: Adiciona uma nova transação.
+- `DELETE /delete/:id`: Remove uma transação com base no ID.
+
+## Configuração do Banco de Dados
+
+A conexão com o banco de dados é configurada no arquivo `database.js`. As credenciais de acesso ao banco de dados são especificadas aqui.
 
 ## Conclusão
 
