@@ -36,9 +36,9 @@ export const getSummary = async (req, res) => {
         const [total] = await database.query(queryTotal);
 
         const summary = {
-            income: entradas[0].totalEntradas || 0,
-            expense: saidas[0].totalSaidas || 0,
-            total: total[0].saldoTotal || 0
+            income: Number(entradas[0].totalEntradas) || 0,
+            expense: Number(saidas[0].totalSaidas) || 0,
+            total: Number(total[0].saldoTotal) || 0
         };
         res.status(200).json(summary);
     } catch (err) {
@@ -46,6 +46,7 @@ export const getSummary = async (req, res) => {
         res.status(500).json(err);
     }
 };
+
 //updateTotal é uma função que atualiza o total de entradas e saídas    
 const updateTotal = async () => {
  

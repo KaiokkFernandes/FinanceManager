@@ -24,7 +24,11 @@ const App = () => {
   const [onEdit, setOnEdit] = useState(null);
   
   const genereatePDF = () => {
-    RelatorioPDF(users);
+    if (typeof total === 'number') {
+      RelatorioPDF(users, total); 
+    } else {
+      console.error('Total não é um número');
+    }
   }  
   const getUsers = async () => {
     try {
@@ -81,7 +85,7 @@ const App = () => {
       
       const { desc, amount, isExpense } = transaction;
   
-      // Faça a requisição POST com isExpense no corpo
+      
       await axios.post('http://localhost:8800/transaction', {
         desc,
         valor: amount,
@@ -101,7 +105,7 @@ const App = () => {
     try {
       await axios.delete(`http://localhost:8800/delete/${id}`); 
       
-      // Busque a lista atualizada de itens e o resumo financeiro
+      
       getUsers();
       getSummary();
     } catch (error) {

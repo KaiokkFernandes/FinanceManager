@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';  
-import database from './database.js'; // Ajuste o caminho se necessário
+import database from './database.js'; 
 import userRoutes from "./routes/users.js";  
 
 const app = express();
